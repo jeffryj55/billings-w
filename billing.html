@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+<style>
+  h1 {
+  text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}
+    .container-fluid{
+      border:1px solid black;
+     width:70%;
+     border-radius: 15px;
+    background: url('img/1.jpg');
+    
+
+    }
+
+      .btn{
+       background:black;
+       color: white;
+    }
+    .row label{
+      color: black;
+    }
+    .table{
+  background: dimgrey;
+}
+th{
+  background: black;
+ text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}
+td{
+  border: 1px solid black;
+}
+#qty{
+border: 1px solid black;
+}
+#res{
+
+ text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
+}
+
+</style>
+<body>
+
+           <div class="container"style=" padding-top: 5%;">
+            <div class="container-fluid  text-center pt-5">
+              <div class="row  "style=" border-radius: 15px 15px 0 0 ; background:black;">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                  <h1 class="title">BILLING</h1>
+                </div>
+              </div>
+              <div class="row"style=" padding-top: 5%;">
+              
+                  <div class="col-md-6 col-lg-6 col-sm-6">
+                    <a href="admin.html"><button type="button" class="btn">Admin</button></a><br><br>
+                  </div>
+
+                  <div class="col-lg-6 col-md-6 col col-sm-6">
+                    <a href="index.html"><button type="button" class="btn">Home</button></a><br><br><br>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-4">
+                    <select id="select"class="form-control" style="font-size:20px;"></select><br><br>
+                  </div>
+                   <div class="col-lg-4 col-md-4 col-sm-4">
+                     <input class="form-control" placeholder="quantity" id="qty" type="text"required><br><br>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4">
+                    <button type="button"  class="btn">click to add</button><br><br>
+                  </div>
+                </div>
+                   <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                    <table class="table"color:black;font-size: 15px" border= "2">
+                      <thead>
+                         <th>
+                         <center>ItemName</center>
+                        </th>
+                        <th>
+                         <center>quantity price </center>
+                        </th>
+                        <th><center>Price</center></th>
+                      </thead>
+                       <strong><tbody id="body"></tbody></strong>
+                    </table>
+                    <h4 id="res"></h4>
+                
+            
+            </div>
+          </div>
+             </div>
+          </div>
+        </body>
+            <script>
+                var list="";
+                var col=[];
+               
+              var request=$.ajax({
+                type:"GET",
+                url:"https://5c80b2f602991c0014ed0472.mockapi.io/api/v1/billing",
+                datatype:"json",
+                success:function(result)
+                {
+                  list=result;
+                  var text="";
+                  for(var i=0;i<list.length;i++)
+                  {
+                    text+="<option>"+list[i].item+"</option>"
+
+                  }
+                  $("#select").html(text)
+                }
+              });
+
+
+
+ $("button").click(function(){
+              
+               
+                var qty=$("#qty").val();
+               var c=$("#select").val();
+               console.log(c);
+                console.log(list);
+                console.log(qty);
+               for(var j=0;j<list.length;j++){
+
+             if(c==list[j].item){
+               var d=list[j].price;
+               console.log(d);
+                  var result=d*qty;
+                  console.log(result);
+                  col.push(result);
+             }
+           }
+            var total="";
+           for(var k=0;k<col.length;k++){
+
+  var p=col[k];
+  //total=0;
+
+    total=eval( total + p)
+ console.log(total);
+
+}
+var data={
+  name:c,
+  amount:result,
+  price:d
+}
+      $("#res").html("total"+" "+"="+" "+ total);
+      $("#body").append("<tr><td>"+data.name+"</td>"+"<td>"+data.price+"</td>"+"<td>"+data.amount+"</td></tr>");
+            });
+
+
+              </script>
+              </html>
